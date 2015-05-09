@@ -33,6 +33,8 @@ public class User {
     @NotEmpty
     private String password;
 
+    private boolean validated = false;
+
     public String getFirstName() {
         return firstName;
     }
@@ -63,5 +65,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
     }
 }
