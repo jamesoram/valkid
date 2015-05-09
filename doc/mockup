@@ -1,0 +1,13 @@
+POST /user/new
+{
+  "first_name" : "",
+  "last_name"  : "",
+  "email"      : "",
+  "password"   : "",
+  "app_token"  : ""
+}
+Returns:
+    * 201 Created on success
+    * 400 Bad Request on missing parameters
+    * 403 Forbidden on incorrect token
+
