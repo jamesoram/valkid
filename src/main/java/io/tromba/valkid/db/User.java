@@ -1,4 +1,4 @@
-package io.tromba.valkid.entity;
+package io.tromba.valkid.db;
 
 import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Email;
