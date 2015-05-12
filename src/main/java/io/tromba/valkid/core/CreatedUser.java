@@ -6,16 +6,16 @@ import org.hibernate.validator.constraints.Length;
 /**
  * Created representation class.
  */
-public class Created  {
+public class CreatedUser {
 
     @Length(max = 256)
     private String content;
 
-    public Created() {
+    public CreatedUser() {
 
     }
 
-    public Created(String content) {
+    public CreatedUser(String content) {
         this.content = content;
     }
 
