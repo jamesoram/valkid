@@ -13,7 +13,7 @@ import org.mongodb.morphia.annotations.Indexed;
  */
 
 @Entity("users")
-public class User {
+public class UserEntity {
 
     @Id
     private ObjectId id;

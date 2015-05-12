@@ -2,7 +2,7 @@ package io.tromba.valkid.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import io.tromba.valkid.core.CreatedUser;
-import io.tromba.valkid.db.User;
+import io.tromba.valkid.db.UserEntity;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -30,10 +30,10 @@ public class UserResource {
                               @FormParam("email") String email, @FormParam("password") String password,
                               @FormParam("app_token") String appToken) {
         // do magic here
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setFirstName(firstName);
+        userEntity.setLastName(lastName);
+        userEntity.setEmail(email);
         // encrypt with password manager
 //        user.setPassword(password);
 //        user.save

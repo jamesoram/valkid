@@ -1,7 +1,7 @@
 package io.tromba.valkid.healthchecks;
 
 import com.codahale.metrics.health.HealthCheck;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class MongoHealthCheck extends HealthCheck {
 
-    private Mongo mongo;
+    private MongoClient mongo;
 
-    public MongoHealthCheck(Mongo mongo) {
+    public MongoHealthCheck(MongoClient mongo) {
         this.mongo = mongo;
     }
 

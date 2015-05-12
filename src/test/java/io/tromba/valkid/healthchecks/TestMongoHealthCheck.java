@@ -1,7 +1,7 @@
 package io.tromba.valkid.healthchecks;
 
 import com.codahale.metrics.health.HealthCheck.Result;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -19,7 +19,7 @@ public class TestMongoHealthCheck {
 
     @Test
     public void testMongoIsHealthy() {
-        Mongo mongo = Mockito.mock(Mongo.class);
+        MongoClient mongo = Mockito.mock(MongoClient.class);
         ServerAddress testAddress = new ServerAddress("0.0.0.0");
         List<ServerAddress> testAddressList = new LinkedList<ServerAddress>();
         testAddressList.add(testAddress);
@@ -32,7 +32,7 @@ public class TestMongoHealthCheck {
 
     @Test
     public void testMongoIsUnhealthyWithException() {
-        Mongo mongo = Mockito.mock(Mongo.class);
+        MongoClient mongo = Mockito.mock(MongoClient.class);
         when(mongo.getAllAddress()).thenThrow(NullPointerException.class);
 
         MongoHealthCheck mongoHealthCheck = new MongoHealthCheck(mongo);
@@ -43,7 +43,7 @@ public class TestMongoHealthCheck {
 
     @Test
     public void testMongoIsUnhealthyWhenThereAreNoConnectedServers() {
-        Mongo mongo = Mockito.mock(Mongo.class);
+        MongoClient mongo = Mockito.mock(MongoClient.class);
         when(mongo.getAllAddress()).thenReturn(new LinkedList<ServerAddress>());
 
         MongoHealthCheck mongoHealthCheck = new MongoHealthCheck(mongo);

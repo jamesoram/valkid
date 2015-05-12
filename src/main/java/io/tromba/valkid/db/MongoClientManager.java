@@ -1,6 +1,6 @@
 package io.tromba.valkid.db;
 
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import io.dropwizard.lifecycle.Managed;
 import io.tromba.valkid.ValkidConfiguration;
 
@@ -9,21 +9,22 @@ import io.tromba.valkid.ValkidConfiguration;
  */
 public class MongoClientManager implements Managed {
 
-    private final Mongo mongo;
+    private final MongoClient mongo;
 
     public MongoClientManager(ValkidConfiguration configuration) {
         this(startMongo(configuration));
+
     }
 
-    public MongoClientManager(Mongo mongo) {
+    public MongoClientManager(MongoClient mongo) {
         this.mongo = mongo;
     }
 
-    private static Mongo startMongo(ValkidConfiguration configuration) {
-        return new Mongo(configuration.getMongoHost(), configuration.getMongoPort());
+    private static MongoClient startMongo(ValkidConfiguration configuration) {
+        return new MongoClient(configuration.getMongoHost(), configuration.getMongoPort());
     }
 
-    public Mongo getMongo() {
+    public MongoClient getMongo() {
         return mongo;
     }
 
