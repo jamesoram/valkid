@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 /**
  * Basic tests for the MongoDB healthcheck.
  */
-public class MongoHealthCheckTests {
+public class TestMongoHealthCheck {
 
     @Test
     public void testMongoIsHealthy() {
