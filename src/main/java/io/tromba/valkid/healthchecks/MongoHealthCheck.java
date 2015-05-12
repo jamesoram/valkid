@@ -2,9 +2,12 @@ package io.tromba.valkid.healthchecks;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
+
+import java.util.List;
 
 /**
- * Created by jao on 09/05/15.
+ * Healthcheck for MongoDB.
  */
 public class MongoHealthCheck extends HealthCheck {
 
@@ -17,10 +20,13 @@ public class MongoHealthCheck extends HealthCheck {
     @Override
     protected Result check() {
         try {
-            mongo.getAllAddress();
+            List<ServerAddress> addresses = mongo.getAllAddress();
+            if (null == addresses || addresses.isEmpty()) {
+                return Result.unhealthy("MongoDB down, empty address list");
+            }
             return Result.healthy();
         } catch (Exception e) {
-            return Result.unhealthy("MongoDB down");
+            return Result.unhealthy("MongoDB down, exception thrown: " + e.getMessage());
         }
     }
 }
