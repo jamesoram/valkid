@@ -1,5 +1,4 @@
-created: Created!
+createdMessage: Created!
 mongodb: valkid
-
-mongo_host: 192.168.1.7
-mongo_port: 27017
+mongoHost: 192.168.1.7
+mongoPort: 27017
