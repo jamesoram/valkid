@@ -5,6 +5,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.tromba.valkid.db.MongoClientManager;
+import io.tromba.valkid.db.UserDao;
 import io.tromba.valkid.healthchecks.MongoHealthCheck;
 import io.tromba.valkid.resources.UserResource;
 import org.mongodb.morphia.Datastore;
@@ -22,13 +23,13 @@ public class ValkidApplication extends Application<ValkidConfiguration> {
     @Override
     public void run(ValkidConfiguration configuration, Environment environment) {
         MongoClientManager mongoClientManager = new MongoClientManager(configuration);
+        Datastore datastore = new Morphia().createDatastore(new MongoClient(), configuration.getMongodb());
+        final UserDao userDao = new UserDao(datastore);
 
         environment.lifecycle().manage(mongoClientManager);
-        Morphia morphia = new Morphia();
-        Datastore datastore = morphia.createDatastore(new MongoClient(), configuration.getMongodb());
 
         // add resources
-        final UserResource userResource = new UserResource(configuration.getCreatedMessage());
+        final UserResource userResource = new UserResource(configuration.getCreatedMessage(), userDao);
         environment.jersey().register(userResource);
         // add healthchecks
         environment.healthChecks().register("mongo", new MongoHealthCheck(mongoClientManager.getMongo()));

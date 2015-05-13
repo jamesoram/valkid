@@ -2,7 +2,7 @@ package io.tromba.valkid.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import io.tromba.valkid.core.CreatedUser;
-import io.tromba.valkid.db.UserEntity;
+import io.tromba.valkid.db.UserDao;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -19,9 +19,11 @@ import javax.ws.rs.core.MediaType;
 public class UserResource {
 
     private final String created;
+    private final UserDao userDao;
 
-    public UserResource(String created) {
+    public UserResource(String created, UserDao userDao) {
         this.created = created;
+        this.userDao = userDao;
     }
 
     @POST
@@ -29,14 +31,10 @@ public class UserResource {
     public CreatedUser createUser(@FormParam("first_name") String firstName, @FormParam("last_name") String lastName,
                               @FormParam("email") String email, @FormParam("password") String password,
                               @FormParam("app_token") String appToken) {
-        // do magic here
-        UserEntity userEntity = new UserEntity();
-        userEntity.setFirstName(firstName);
-        userEntity.setLastName(lastName);
-        userEntity.setEmail(email);
-        // encrypt with password manager
-//        user.setPassword(password);
-//        user.save
+        userDao.setFirstName(firstName);
+        userDao.setLastNaMe(lastName);
+        userDao.setEmail(email);
+        userDao.setPassword(password);
         return new CreatedUser();
     }
 }
