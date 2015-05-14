@@ -4,7 +4,7 @@ import io.tromba.valkid.helpers.PasswordManager;
 import org.mongodb.morphia.Datastore;
 
 /**
- * Created by jao on 12/05/15.
+ * Data access object for users.
  */
 public class UserDao {
 
