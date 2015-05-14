@@ -35,6 +35,7 @@ public class UserResource {
         userDao.setLastNaMe(lastName);
         userDao.setEmail(email);
         userDao.setPassword(password);
-        return new CreatedUser();
+        userDao.save();
+        return new CreatedUser(created);
     }
 }

@@ -32,4 +32,8 @@ public class UserDao {
         PasswordManager passwordManager = new PasswordManager();
         userEntity.setPassword(passwordManager.encrypt(password));
     }
+
+    public void save() {
+        dataStore.save(userEntity);
+    }
 }
