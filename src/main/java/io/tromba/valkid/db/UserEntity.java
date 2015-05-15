@@ -37,6 +37,8 @@ public class UserEntity {
 
     private String lastUpdated;
 
+    private String salt;
+
     private boolean validated = false;
 
     public String getFirstName() {
@@ -93,5 +95,13 @@ public class UserEntity {
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

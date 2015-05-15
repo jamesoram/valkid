@@ -7,6 +7,7 @@ public class PasswordManager {
 
     private String secret;
 
+    @Deprecated
     public PasswordManager() {
         this.secret = "in development";
     }
