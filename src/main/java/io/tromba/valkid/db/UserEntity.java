@@ -33,6 +33,10 @@ public class UserEntity {
     @NotEmpty
     private String password;
 
+    private String joinDate;
+
+    private String lastUpdated;
+
     private boolean validated = false;
 
     public String getFirstName() {
@@ -73,5 +77,21 @@ public class UserEntity {
 
     public void setValidated(boolean validated) {
         this.validated = validated;
+    }
+
+    public String getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(String joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

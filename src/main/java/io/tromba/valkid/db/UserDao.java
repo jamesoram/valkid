@@ -29,11 +29,15 @@ public class UserDao {
     }
 
     public void setPassword(String password) {
-        PasswordManager passwordManager = new PasswordManager();
-        userEntity.setPassword(passwordManager.encrypt(password));
+        userEntity.setPassword(new PasswordManager().encrypt(password));
     }
 
     public void save() {
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        if (null == userEntity.getJoinDate()) {
+            userEntity.setJoinDate(currentTime);
+        }
+        userEntity.setLastUpdated(currentTime);
         dataStore.save(userEntity);
     }
 }
