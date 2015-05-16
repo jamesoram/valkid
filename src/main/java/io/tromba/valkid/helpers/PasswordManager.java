@@ -30,12 +30,12 @@ public class PasswordManager {
     }
 
     public String encrypt(String password) {
-        String algorithm = "SHA-512";
+        final String algorithm = "SHA-512";
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException nsae) {
-            throw new RuntimeException("Algorithm" + algorithm + " not found: " + nsae.getMessage());
+            throw new RuntimeException("Algorithm " + algorithm + " not found: " + nsae.getMessage());
         }
         byte[] encryptedPassword = messageDigest.digest((getSalt() + password).getBytes());
         return String.valueOf(encryptedPassword);
