@@ -3,8 +3,6 @@ package io.tromba.valkid.db;
 import io.tromba.valkid.helpers.PasswordManager;
 import org.mongodb.morphia.Datastore;
 
-import java.security.SecureRandom;
-
 /**
  * Data access object for users.
  */
@@ -31,11 +29,10 @@ public class UserDao {
     }
 
     public void setPassword(String password) {
-        byte[] time = String.valueOf(System.currentTimeMillis()).getBytes();
-        SecureRandom secureRandom = new SecureRandom(time);
-        String salt = String.valueOf(secureRandom.generateSeed(32));
+        PasswordManager passwordManager = new PasswordManager();
+        final String salt = passwordManager.getSalt();
         userEntity.setSalt(salt);
-        userEntity.setPassword(new PasswordManager(salt).encrypt(password));
+        userEntity.setPassword(passwordManager.encrypt(password));
     }
 
     public void save() {
