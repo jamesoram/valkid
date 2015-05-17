@@ -37,7 +37,7 @@ public class UserEntity {
 
     private String lastUpdated;
 
-    private String salt;
+    private byte[] salt;
 
     private boolean validated = false;
 
@@ -97,11 +97,11 @@ public class UserEntity {
         this.lastUpdated = lastUpdated;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 }

@@ -9,23 +9,34 @@ import java.security.SecureRandom;
  */
 public class PasswordManager {
 
-    private String salt;
+    private byte[] salt;
 
-    public void setSalt(String salt) {
+    public PasswordManager() {
+        this.salt = generateSalt();
+    }
+
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         if (null == salt) {
             this.salt = generateSalt();
         }
         return salt;
     }
 
-    public String generateSalt() {
-        byte[] time = String.valueOf(System.currentTimeMillis()).getBytes();
-        SecureRandom secureRandom = new SecureRandom(time);
-        String salt = String.valueOf(secureRandom.generateSeed(32));
+    public byte[] generateSalt() {
+        final String algorithm = "SHA1PRNG";
+        SecureRandom secureRandom;
+        try {
+            secureRandom = SecureRandom.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException nsae) {
+            throw new RuntimeException("Algorithm " + algorithm + " not found: " + nsae.getMessage());
+        }
+        byte[] salt = new byte[32];
+        secureRandom.setSeed(System.currentTimeMillis());
+        secureRandom.nextBytes(salt);
         return salt;
     }
 
@@ -37,7 +48,7 @@ public class PasswordManager {
         } catch (NoSuchAlgorithmException nsae) {
             throw new RuntimeException("Algorithm " + algorithm + " not found: " + nsae.getMessage());
         }
-        byte[] encryptedPassword = messageDigest.digest((getSalt() + password).getBytes());
+        byte[] encryptedPassword = messageDigest.digest((salt + password).getBytes());
         return String.valueOf(encryptedPassword);
     }
 }

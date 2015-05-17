@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
  */
 public class TestUserDao {
 
-    @Test
+    @Test(groups = "UserDao")
     public void testUserCreated() {
         final String created = "created";
         final String firstName = "james";

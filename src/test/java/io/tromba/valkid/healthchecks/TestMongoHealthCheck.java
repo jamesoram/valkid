@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
  */
 public class TestMongoHealthCheck {
 
-    @Test(groups = "healthcheck")
+    @Test(groups = "healthCheck")
     public void testMongoIsHealthy() {
         MongoClient mongo = Mockito.mock(MongoClient.class);
         ServerAddress testAddress = new ServerAddress("0.0.0.0");
@@ -31,7 +31,7 @@ public class TestMongoHealthCheck {
         assertThat("MongoDB result was not healthy", mongoHealthCheck.check(), equalTo(Result.healthy()));
     }
 
-    @Test(groups = "healthcheck")
+    @Test(groups = "healthCheck")
     public void testMongoIsUnhealthyWithException() {
         MongoClient mongo = Mockito.mock(MongoClient.class);
         when(mongo.getAllAddress()).thenThrow(NullPointerException.class);
@@ -42,7 +42,7 @@ public class TestMongoHealthCheck {
                 not(equalTo(mongoHealthCheck.check())));
     }
 
-    @Test(groups = "healthcheck")
+    @Test(groups = "healthCheck")
     public void testMongoIsUnhealthyWhenThereAreNoConnectedServers() {
         MongoClient mongo = Mockito.mock(MongoClient.class);
         when(mongo.getAllAddress()).thenReturn(new LinkedList<ServerAddress>());
