@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Created by jao on 16/05/15.
+ * Tests for the password manager.
  */
 public class TestPasswordManager {
 
@@ -14,10 +14,10 @@ public class TestPasswordManager {
     public void testEncrypt() {
         PasswordManager passwordManager = new PasswordManager();
 
-        String result = passwordManager.encrypt("test");
+        byte[] result = passwordManager.encrypt("test");
         // reruns still generate the same hashes.. ?
 
-        String result2 = new PasswordManager().encrypt("test");
+        byte[] result2 = new PasswordManager().encrypt("test");
 
         assertThat(result, not(equalTo(result2)));
     }

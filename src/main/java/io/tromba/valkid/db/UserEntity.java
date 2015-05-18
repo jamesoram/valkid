@@ -31,7 +31,7 @@ public class UserEntity {
     private String email;
 
     @NotEmpty
-    private String password;
+    private byte[] password;
 
     private String joinDate;
 
@@ -65,11 +65,11 @@ public class UserEntity {
         this.email = email;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 
