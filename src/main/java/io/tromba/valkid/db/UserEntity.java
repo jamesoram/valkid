@@ -31,13 +31,13 @@ public class UserEntity {
     private String email;
 
     @NotEmpty
-    private byte[] password;
+    private String password;
 
     private String joinDate;
 
     private String lastUpdated;
 
-    private byte[] salt;
+    private String salt;
 
     private boolean validated = false;
 
@@ -65,11 +65,11 @@ public class UserEntity {
         this.email = email;
     }
 
-    public byte[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(byte[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -97,11 +97,11 @@ public class UserEntity {
         this.lastUpdated = lastUpdated;
     }
 
-    public byte[] getSalt() {
+    public String getSalt() {
         return salt;
     }
 
-    public void setSalt(byte[] salt) {
+    public void setSalt(String salt) {
         this.salt = salt;
     }
 }

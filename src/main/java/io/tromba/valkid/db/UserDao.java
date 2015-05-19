@@ -30,7 +30,7 @@ public class UserDao {
 
     public void setPassword(String password) {
         PasswordManager passwordManager = new PasswordManager();
-        final byte[] salt = passwordManager.getSalt();
+        final String salt = passwordManager.getSalt();
         userEntity.setSalt(salt);
         userEntity.setPassword(passwordManager.encrypt(password));
     }

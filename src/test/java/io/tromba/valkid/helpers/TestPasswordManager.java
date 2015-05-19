@@ -14,10 +14,10 @@ public class TestPasswordManager {
     public void testEncrypt() {
         PasswordManager passwordManager = new PasswordManager();
 
-        byte[] result = passwordManager.encrypt("test");
+        String result = passwordManager.encrypt("test");
         // reruns still generate the same hashes.. ?
 
-        byte[] result2 = new PasswordManager().encrypt("test");
+        String result2 = new PasswordManager().encrypt("test");
 
         assertThat(result, not(equalTo(result2)));
     }
@@ -26,14 +26,14 @@ public class TestPasswordManager {
     public void testGenerateSaltChangesInEveryMillisecond() {
         // salt should be different in different ms
         PasswordManager passwordManager = new PasswordManager();
-        byte[] firstSalt = passwordManager.generateSalt();
+        String firstSalt = passwordManager.generateSalt();
         try {
             Thread.sleep(1);
         } catch (Exception e) {
             // do nothing
         }
 
-        byte[] secondSalt = passwordManager.generateSalt();
+        String secondSalt = passwordManager.generateSalt();
         assertThat("Salt should be different for every millisecond", firstSalt, not(equalTo(secondSalt)));
     }
 }

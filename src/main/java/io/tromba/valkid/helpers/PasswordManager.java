@@ -3,30 +3,31 @@ package io.tromba.valkid.helpers;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * Password helper class.
  */
 public class PasswordManager {
 
-    private byte[] salt;
+    private String salt;
 
     public PasswordManager() {
         this.salt = generateSalt();
     }
 
-    public void setSalt(byte[] salt) {
+    public void setSalt(String salt) {
         this.salt = salt;
     }
 
-    public byte[] getSalt() {
+    public String getSalt() {
         if (null == salt) {
             this.salt = generateSalt();
         }
         return salt;
     }
 
-    public byte[] generateSalt() {
+    public String generateSalt() {
         final String algorithm = "SHA1PRNG";
         SecureRandom secureRandom;
         try {
@@ -37,10 +38,10 @@ public class PasswordManager {
         byte[] salt = new byte[32];
         secureRandom.setSeed(System.currentTimeMillis());
         secureRandom.nextBytes(salt);
-        return salt;
+        return new String(Base64.getEncoder().encode(salt));
     }
 
-    public byte[] encrypt(String password) {
+    public String encrypt(String password) {
         final String algorithm = "SHA-512";
         MessageDigest messageDigest;
         try {
@@ -48,6 +49,7 @@ public class PasswordManager {
         } catch (NoSuchAlgorithmException nsae) {
             throw new RuntimeException("Algorithm " + algorithm + " not found: " + nsae.getMessage());
         }
-        return messageDigest.digest((salt + password).getBytes());
+        byte[] raw = messageDigest.digest((salt + password).getBytes());
+        return new String(Base64.getEncoder().encode(raw));
     }
 }
