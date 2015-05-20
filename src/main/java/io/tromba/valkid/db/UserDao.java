@@ -3,6 +3,8 @@ package io.tromba.valkid.db;
 import io.tromba.valkid.helpers.PasswordManager;
 import org.mongodb.morphia.Datastore;
 
+import java.util.List;
+
 /**
  * Data access object for users.
  */
@@ -40,7 +42,7 @@ public class UserDao {
     }
 
 
-//    public List<UserEntity> findAll() {
-//        userEntity
-//    }
+    public List<UserEntity> findAll() {
+        return dataStore.find(UserEntity.class).asList();
+    }
 }

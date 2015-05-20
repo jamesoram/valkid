@@ -35,6 +35,6 @@ public class UserResource {
     @GET
     @Timed
     public void getUsers() {
-        //userDao.getUserList();
+        userDao.getUserList();
     }
 }
