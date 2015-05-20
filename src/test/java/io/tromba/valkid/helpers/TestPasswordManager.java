@@ -13,12 +13,8 @@ public class TestPasswordManager {
     @Test(groups = "passwordManager")
     public void testEncrypt() {
         PasswordManager passwordManager = new PasswordManager();
-
         String result = passwordManager.encrypt("test");
-        // reruns still generate the same hashes.. ?
-
         String result2 = new PasswordManager().encrypt("test");
-
         assertThat(result, not(equalTo(result2)));
     }
 
