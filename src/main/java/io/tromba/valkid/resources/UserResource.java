@@ -3,9 +3,11 @@ package io.tromba.valkid.resources;
 import com.codahale.metrics.annotation.Timed;
 import io.tromba.valkid.core.CreatedUser;
 import io.tromba.valkid.db.UserDao;
+import io.tromba.valkid.db.UserEntity;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * User resource class.
@@ -34,7 +36,7 @@ public class UserResource {
 
     @GET
     @Timed
-    public void getUsers() {
-        userDao.getUserList();
+    public List<UserEntity> getUsers() {
+        return userDao.findAll();
     }
 }
