@@ -4,10 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import io.tromba.valkid.core.CreatedUser;
 import io.tromba.valkid.db.UserDao;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -31,11 +28,13 @@ public class UserResource {
     public CreatedUser createUser(@FormParam("first_name") String firstName, @FormParam("last_name") String lastName,
                               @FormParam("email") String email, @FormParam("password") String password,
                               @FormParam("app_token") String appToken) {
-        userDao.setFirstName(firstName);
-        userDao.setLastNaMe(lastName);
-        userDao.setEmail(email);
-        userDao.setPassword(password);
-        userDao.save();
+        userDao.create(firstName, lastName, email, password);
         return new CreatedUser(created);
+    }
+
+    @GET
+    @Timed
+    public void getUsers() {
+        //userDao.getUserList();
     }
 }

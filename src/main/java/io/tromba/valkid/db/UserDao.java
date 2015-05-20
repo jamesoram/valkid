@@ -9,33 +9,21 @@ import org.mongodb.morphia.Datastore;
 public class UserDao {
 
     private Datastore dataStore;
-    private UserEntity userEntity;
 
     public UserDao(Datastore dataStore) {
         this.dataStore = dataStore;
-        userEntity = new UserEntity();
     }
 
-    public void setFirstName(String firstName) {
+    public void create(String firstName, String lastName, String email, String password) {
+        UserEntity userEntity = new UserEntity();
         userEntity.setFirstName(firstName);
-    }
-
-    public void setLastNaMe(String lastName) {
         userEntity.setLastName(lastName);
-    }
-
-    public void setEmail(String email) {
         userEntity.setEmail(email);
+        setPassword(userEntity, password);
+        save(userEntity);
     }
 
-    public void setPassword(String password) {
-        PasswordManager passwordManager = new PasswordManager();
-        final String salt = passwordManager.getSalt();
-        userEntity.setSalt(salt);
-        userEntity.setPassword(passwordManager.encrypt(password));
-    }
-
-    public void save() {
+    private void save(UserEntity userEntity) {
         String currentTime = String.valueOf(System.currentTimeMillis());
         if (null == userEntity.getJoinDate()) {
             userEntity.setJoinDate(currentTime);
@@ -43,4 +31,16 @@ public class UserDao {
         userEntity.setLastUpdated(currentTime);
         dataStore.save(userEntity);
     }
+
+    private void setPassword(UserEntity userEntity, String password) {
+        PasswordManager passwordManager = new PasswordManager();
+        final String salt = passwordManager.getSalt();
+        userEntity.setSalt(salt);
+        userEntity.setPassword(passwordManager.encrypt(password));
+    }
+
+
+//    public List<UserEntity> findAll() {
+//        userEntity
+//    }
 }
