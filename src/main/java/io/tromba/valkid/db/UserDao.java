@@ -17,32 +17,32 @@ public class UserDao {
     }
 
     public void create(String firstName, String lastName, String email, String password) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setFirstName(firstName);
-        userEntity.setLastName(lastName);
-        userEntity.setEmail(email);
-        setPassword(userEntity, password);
-        save(userEntity);
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        setPassword(user, password);
+        save(user);
     }
 
-    private void save(UserEntity userEntity) {
+    private void save(User user) {
         String currentTime = String.valueOf(System.currentTimeMillis());
-        if (null == userEntity.getJoinDate()) {
-            userEntity.setJoinDate(currentTime);
+        if (null == user.getJoinDate()) {
+            user.setJoinDate(currentTime);
         }
-        userEntity.setLastUpdated(currentTime);
-        dataStore.save(userEntity);
+        user.setLastUpdated(currentTime);
+        dataStore.save(user);
     }
 
-    private void setPassword(UserEntity userEntity, String password) {
+    private void setPassword(User user, String password) {
         PasswordManager passwordManager = new PasswordManager();
         final String salt = passwordManager.getSalt();
-        userEntity.setSalt(salt);
-        userEntity.setPassword(passwordManager.encrypt(password));
+        user.setSalt(salt);
+        user.setPassword(passwordManager.encrypt(password));
     }
 
 
-    public List<UserEntity> findAll() {
-        return dataStore.find(UserEntity.class).asList();
+    public List<User> findAll() {
+        return dataStore.find(User.class).asList();
     }
 }
