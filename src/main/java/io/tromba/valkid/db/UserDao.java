@@ -1,5 +1,6 @@
 package io.tromba.valkid.db;
 
+import io.tromba.valkid.exceptions.NoSuchUserException;
 import io.tromba.valkid.helpers.PasswordManager;
 import org.mongodb.morphia.Datastore;
 
@@ -44,5 +45,10 @@ public class UserDao {
 
     public List<User> findAll() {
         return dataStore.find(User.class).asList();
+    }
+
+    public User findById(String id) throws NoSuchUserException {
+        User user = null;//dataStore.getByKey(User.class, String id);
+        return user;
     }
 }

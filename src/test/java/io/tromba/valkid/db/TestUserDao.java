@@ -31,4 +31,8 @@ public class TestUserDao {
         // check that the data has been saved to the database.
         Mockito.verify(datastore, Mockito.times(1));
     }
+
+    // test for find when db empty and nonempty
+
+    // tests for find by id
 }

@@ -2,8 +2,9 @@ package io.tromba.valkid.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import io.tromba.valkid.core.CreatedUser;
-import io.tromba.valkid.db.UserDao;
 import io.tromba.valkid.db.User;
+import io.tromba.valkid.db.UserDao;
+import io.tromba.valkid.exceptions.NoSuchUserException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -38,5 +39,16 @@ public class UserResource {
     @Timed
     public List<User> getUsers() {
         return userDao.findAll();
+    }
+
+    @GET
+    @Timed
+    public User getUser(@PathParam("id") String id) {
+        try {
+            return userDao.findById(id);
+        } catch (NoSuchUserException e) {
+            // return 404
+            return null;
+        }
     }
 }
