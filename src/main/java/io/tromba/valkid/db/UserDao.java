@@ -48,7 +48,10 @@ public class UserDao {
     }
 
     public User findById(String id) throws NoSuchUserException {
-        User user = null;//dataStore.getByKey(User.class, String id);
+        User user = dataStore.find(User.class).field("id").equal(id).get();
+        if (null == user) {
+            throw new NoSuchUserException();
+        }
         return user;
     }
 }
