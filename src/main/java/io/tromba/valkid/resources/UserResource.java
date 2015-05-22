@@ -47,8 +47,7 @@ public class UserResource {
         try {
             return userDao.findById(id);
         } catch (NoSuchUserException e) {
-            // return 404
-            return null;
+            throw new NotFoundException();
         }
     }
 }
