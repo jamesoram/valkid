@@ -1,6 +1,5 @@
 package io.tromba.valkid.db;
 
-import io.tromba.valkid.resources.UserResource;
 import org.mockito.Mockito;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.when;
  */
 public class TestUserDao {
 
-    @Test(groups = "UserDao")
+    @Test(groups = "userDao")
     public void testUserCreated() {
         final String created = "created";
         final String firstName = "james";
@@ -31,14 +30,13 @@ public class TestUserDao {
         Datastore datastore = Mockito.mock(Datastore.class);
         when(datastore.save()).thenReturn(new LinkedList<Key<Object>>());
         UserDao userDao = new UserDao(datastore);
-        UserResource userResource = new UserResource(created, userDao);
-
-        userResource.createUser(firstName, lastName, email, password, "empty");
+        User user = userDao.create(firstName, lastName,email, password);
         // check that the data has been saved to the database.
-        Mockito.verify(datastore, Mockito.times(1));
+        Mockito.verify(datastore, Mockito.times(1)).save(user);
+
     }
 
-    @Test(groups = "UserDao")
+    @Test(groups = "userDao")
     public void testUsersFound() {
         Datastore datastore = Mockito.mock(Datastore.class);
         List<User> users = new ArrayList<User>();
@@ -49,12 +47,23 @@ public class TestUserDao {
                 (User.class)
                 .asList())
                 .thenReturn(users);
-
         UserDao userDao = new UserDao(datastore);
         assertThat(userDao.findAll(), not(empty()));
     }
 
-    // test for find when db empty and nonempty
+    @Test(groups = "userDao")
+    public void testNoUsersFound() {
+        Datastore datastore = Mockito.mock(Datastore.class);
+        Query<User> userQuery = Mockito.mock(Query.class);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find
+                (User.class)
+                .asList())
+                .thenReturn(new ArrayList<User>());
+
+        UserDao userDao = new UserDao(datastore);
+        assertThat(userDao.findAll(), empty());
+    }
 
     // tests for find by id
 }

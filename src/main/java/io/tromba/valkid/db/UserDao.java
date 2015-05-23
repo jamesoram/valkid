@@ -17,13 +17,14 @@ public class UserDao {
         this.dataStore = dataStore;
     }
 
-    public void create(String firstName, String lastName, String email, String password) {
+    public User create(String firstName, String lastName, String email, String password) {
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         setPassword(user, password);
         save(user);
+        return user;
     }
 
     private void save(User user) {
