@@ -4,6 +4,7 @@ import org.mockito.Mockito;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.Query;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -20,6 +21,15 @@ import static org.mockito.Mockito.when;
  */
 public class TestUserDao {
 
+    Datastore datastore;
+    Query<User> userQuery;
+
+    @BeforeClass
+    private void setUp() {
+        this.datastore = Mockito.mock(Datastore.class);
+        this.userQuery = Mockito.mock(Query.class);
+    }
+
     @Test(groups = "userDao")
     public void testUserCreated() {
         final String created = "created";
@@ -27,7 +37,6 @@ public class TestUserDao {
         final String lastName = "test";
         final String email = "test@example.com";
         final String password = "secret";
-        Datastore datastore = Mockito.mock(Datastore.class);
         when(datastore.save()).thenReturn(new LinkedList<Key<Object>>());
         UserDao userDao = new UserDao(datastore);
         User user = userDao.create(firstName, lastName,email, password);
@@ -38,23 +47,19 @@ public class TestUserDao {
 
     @Test(groups = "userDao")
     public void testUsersFound() {
-        Datastore datastore = Mockito.mock(Datastore.class);
         List<User> users = new ArrayList<User>();
         users.add(new User());
-        Query<User> userQuery = Mockito.mock(Query.class);
         when(datastore.find(User.class)).thenReturn(userQuery);
         when(datastore.find
                 (User.class)
                 .asList())
                 .thenReturn(users);
         UserDao userDao = new UserDao(datastore);
-        assertThat(userDao.findAll(), not(empty()));
+        assertThat("Find all should find users", userDao.findAll(), not(empty()));
     }
 
     @Test(groups = "userDao")
     public void testNoUsersFound() {
-        Datastore datastore = Mockito.mock(Datastore.class);
-        Query<User> userQuery = Mockito.mock(Query.class);
         when(datastore.find(User.class)).thenReturn(userQuery);
         when(datastore.find
                 (User.class)
@@ -62,8 +67,10 @@ public class TestUserDao {
                 .thenReturn(new ArrayList<User>());
 
         UserDao userDao = new UserDao(datastore);
-        assertThat(userDao.findAll(), empty());
+        assertThat("Find all should not find anything when there are not users", userDao.findAll(), empty());
     }
 
-    // tests for find by id
+    @Test(groups = "userDao")
+    public void testUserFoundByEmail() {
+    }
 }
