@@ -1,8 +1,10 @@
 package io.tromba.valkid.db;
 
+import io.tromba.valkid.exceptions.NoSuchUserException;
 import org.mockito.Mockito;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
+import org.mongodb.morphia.query.FieldEnd;
 import org.mongodb.morphia.query.Query;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -12,8 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -21,13 +22,16 @@ import static org.mockito.Mockito.when;
  */
 public class TestUserDao {
 
-    Datastore datastore;
-    Query<User> userQuery;
+    private Datastore datastore;
+    private Query<User> userQuery;
+    private UserDao userDao;
+    private static final String email = "someone@somewhere.com";
 
     @BeforeClass
     private void setUp() {
         this.datastore = Mockito.mock(Datastore.class);
         this.userQuery = Mockito.mock(Query.class);
+        userDao = new UserDao(datastore);
     }
 
     @Test(groups = "userDao")
@@ -38,11 +42,9 @@ public class TestUserDao {
         final String email = "test@example.com";
         final String password = "secret";
         when(datastore.save()).thenReturn(new LinkedList<Key<Object>>());
-        UserDao userDao = new UserDao(datastore);
         User user = userDao.create(firstName, lastName,email, password);
         // check that the data has been saved to the database.
         Mockito.verify(datastore, Mockito.times(1)).save(user);
-
     }
 
     @Test(groups = "userDao")
@@ -54,7 +56,6 @@ public class TestUserDao {
                 (User.class)
                 .asList())
                 .thenReturn(users);
-        UserDao userDao = new UserDao(datastore);
         assertThat("Find all should find users", userDao.findAll(), not(empty()));
     }
 
@@ -65,12 +66,39 @@ public class TestUserDao {
                 (User.class)
                 .asList())
                 .thenReturn(new ArrayList<User>());
-
-        UserDao userDao = new UserDao(datastore);
         assertThat("Find all should not find anything when there are not users", userDao.findAll(), empty());
     }
 
     @Test(groups = "userDao")
     public void testUserFoundByEmail() {
+        FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
+        when(fieldEnd.equal(email)).thenReturn(userQuery);
+        User user = new User();
+        user.setEmail(email);
+        when(userQuery.get()).thenReturn(user);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
+        User foundUser = null;
+
+        try {
+            foundUser = userDao.findByEmail(email);
+        } catch (NoSuchUserException e) {
+            org.testng.Assert.fail("no users were found when expecting to find by email");
+        }
+        assertThat("User should be found by email", foundUser, equalTo(user));
+    }
+
+    @Test(groups = "userDao", expectedExceptions = NoSuchUserException.class)
+    public void testUserNotFoundByEmail() throws NoSuchUserException {
+        FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
+        when(fieldEnd.equal(email)).thenReturn(userQuery);
+        User user = new User();
+        user.setEmail(email);
+        when(userQuery.get()).thenReturn(null);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
+
+        userDao.findByEmail(email);
+        // exception should be thrown
     }
 }

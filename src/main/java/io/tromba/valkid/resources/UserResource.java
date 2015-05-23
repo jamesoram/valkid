@@ -43,9 +43,9 @@ public class UserResource {
 
     @GET
     @Timed
-    public User getUser(@PathParam("id") String id) {
+    public User getUser(@PathParam("email") String email) {
         try {
-            return userDao.findById(id);
+            return userDao.findByEmail(email);
         } catch (NoSuchUserException e) {
             throw new NotFoundException();
         }

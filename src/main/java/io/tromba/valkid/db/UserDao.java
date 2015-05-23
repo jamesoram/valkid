@@ -48,8 +48,8 @@ public class UserDao {
         return dataStore.find(User.class).asList();
     }
 
-    public User findById(String id) throws NoSuchUserException {
-        User user = dataStore.find(User.class).field("id").equal(id).get();
+    public User findByEmail(String email) throws NoSuchUserException {
+        User user = dataStore.find(User.class).field("email").equal(email).get();
         if (null == user) {
             throw new NoSuchUserException();
         }
