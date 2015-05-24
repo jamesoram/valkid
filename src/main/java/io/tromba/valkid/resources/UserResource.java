@@ -1,7 +1,6 @@
 package io.tromba.valkid.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import io.tromba.valkid.core.CreatedUser;
 import io.tromba.valkid.db.User;
 import io.tromba.valkid.db.UserDao;
 import io.tromba.valkid.exceptions.NoSuchUserException;
@@ -28,11 +27,10 @@ public class UserResource {
 
     @POST
     @Timed
-    public CreatedUser createUser(@FormParam("first_name") String firstName, @FormParam("last_name") String lastName,
+    public User createUser(@FormParam("first_name") String firstName, @FormParam("last_name") String lastName,
                               @FormParam("email") String email, @FormParam("password") String password,
                               @FormParam("app_token") String appToken) {
-        userDao.create(firstName, lastName, email, password);
-        return new CreatedUser(created);
+        return userDao.create(firstName, lastName, email, password);
     }
 
     @GET
