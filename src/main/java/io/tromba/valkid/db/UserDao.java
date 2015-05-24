@@ -24,6 +24,7 @@ public class UserDao {
         user.setEmail(email);
         setPassword(user, password);
         save(user);
+        user.setPassword("*******");
         return user;
     }
 
