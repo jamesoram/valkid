@@ -15,7 +15,7 @@ public class TestPasswordManager {
         PasswordManager passwordManager = new PasswordManager();
         String result = passwordManager.encrypt("test");
         String result2 = new PasswordManager().encrypt("test");
-        assertThat(result, not(equalTo(result2)));
+        assertThat("Encryption with different hashes should be different", result, not(equalTo(result2)));
     }
 
     @Test(groups = "passwordManager")
