@@ -26,7 +26,7 @@ public class TestPasswordManager {
         try {
             Thread.sleep(1);
         } catch (Exception e) {
-            // do nothing
+            throw new RuntimeException("The test was cancelled while sleeping");
         }
 
         String secondSalt = passwordManager.generateSalt();
