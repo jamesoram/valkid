@@ -99,4 +99,18 @@ public class TestUserDao {
         userDao.findByEmail(email);
         // exception should be thrown
     }
+
+    @Test(groups = "userDao")
+    public void testDeleteExistingUser() {
+        FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
+        when(fieldEnd.equal(email)).thenReturn(userQuery);
+        User user = new User();
+        user.setEmail(email);
+        when(userQuery.get()).thenReturn(user);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
+
+        userDao.deleteByEmail(email);
+        Mockito.verify(datastore, Mockito.times(1)).delete(user);
+    }
 }
