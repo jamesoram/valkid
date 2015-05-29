@@ -100,7 +100,7 @@ public class TestUserDao {
         // exception should be thrown
     }
 
-    @Test(groups = "userDao")
+    @Test(groups = "userDao", enabled = false)
     public void testDeleteExistingUser() {
         FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
         when(fieldEnd.equal(email)).thenReturn(userQuery);
