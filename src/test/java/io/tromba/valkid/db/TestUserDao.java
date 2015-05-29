@@ -113,4 +113,11 @@ public class TestUserDao {
         userDao.deleteByEmail(email);
         Mockito.verify(datastore, Mockito.times(1)).delete(user);
     }
+
+    @Test(groups = "userDao")
+    public void testDeleteInexistantUser() {
+        when(datastore.delete(userQuery)).thenReturn(null); // find out what is returned at deletion
+        userDao.deleteByEmail(email);
+        Mockito.verify(datastore, Mockito.timeout(0)).delete(User.class);
+    }
 }

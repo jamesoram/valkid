@@ -1,6 +1,5 @@
 package io.tromba.valkid.db;
 
-import com.mongodb.WriteResult;
 import io.tromba.valkid.exceptions.NoSuchUserException;
 import io.tromba.valkid.helpers.PasswordManager;
 import org.mongodb.morphia.Datastore;
@@ -59,6 +58,6 @@ public class UserDao {
     }
 
     public void deleteByEmail(String email) {
-        WriteResult wr = dataStore.delete(dataStore.find(User.class).field("email").equal(email).get());
+        dataStore.delete(dataStore.find(User.class).field("email").equal(email).get());
     }
 }
