@@ -57,7 +57,15 @@ public class UserDao {
         return user;
     }
 
-    public void deleteByEmail(String email) {
-        dataStore.delete(dataStore.find(User.class).field("email").equal(email).get());
+    public void deleteByEmail(String email) throws NoSuchUserException {
+        User result = dataStore
+                .findAndDelete(
+                        dataStore
+                                .find(User.class)
+                                .field("email")
+                                .equal(email));
+        if (null == result) {
+            throw new NoSuchUserException();
+        }
     }
 }

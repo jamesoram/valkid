@@ -101,7 +101,21 @@ public class TestUserDao {
     }
 
     @Test(groups = "userDao", enabled = false)
-    public void testDeleteExistingUser() {
+    public void testDeleteExistingUser() throws NoSuchUserException {
+        FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
+        when(fieldEnd.equal(email)).thenReturn(userQuery);
+        User user = new User();
+        user.setEmail(email);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
+        when(userQuery.get()).thenReturn(user);
+
+        userDao.deleteByEmail(email);
+        Mockito.verify(datastore, Mockito.times(1)).delete(user);
+    }
+
+    @Test(groups = "userDao", expectedExceptions = NoSuchUserException.class)
+    public void testDeleteNonExistingUser() throws NoSuchUserException {
         FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
         when(fieldEnd.equal(email)).thenReturn(userQuery);
         User user = new User();
@@ -109,14 +123,8 @@ public class TestUserDao {
         when(userQuery.get()).thenReturn(user);
         when(datastore.find(User.class)).thenReturn(userQuery);
         when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
-
-        userDao.deleteByEmail(email);
-        Mockito.verify(datastore, Mockito.times(1)).delete(user);
-    }
-
-    @Test(groups = "userDao")
-    public void testDeleteNonExistingUser() {
-        when(datastore.delete(userQuery)).thenReturn(null); // find out what is returned at deletion
+        when(datastore.find(User.class).field("email").equal(email)).thenReturn(userQuery);
+        when(datastore.findAndDelete(userQuery)).thenReturn(null);
         userDao.deleteByEmail(email);
         Mockito.verify(datastore, Mockito.timeout(0)).delete(User.class);
     }
