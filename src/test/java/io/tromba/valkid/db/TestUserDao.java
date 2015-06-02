@@ -100,18 +100,18 @@ public class TestUserDao {
         // exception should be thrown
     }
 
-    @Test(groups = "userDao", enabled = false)
+    @Test(groups = "userDao")
     public void testDeleteExistingUser() throws NoSuchUserException {
         FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
-        when(fieldEnd.equal(email)).thenReturn(userQuery);
         User user = new User();
         user.setEmail(email);
+        when(datastore.findAndDelete(userQuery)).thenReturn(user);
         when(datastore.find(User.class)).thenReturn(userQuery);
         when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
-        when(userQuery.get()).thenReturn(user);
+        when(datastore.find(User.class).field("email").equal(email)).thenReturn(userQuery);
 
         userDao.deleteByEmail(email);
-        Mockito.verify(datastore, Mockito.times(1)).delete(user);
+        Mockito.verify(datastore, Mockito.times(1)).findAndDelete(userQuery);
     }
 
     @Test(groups = "userDao", expectedExceptions = NoSuchUserException.class)
@@ -125,6 +125,7 @@ public class TestUserDao {
         when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
         when(datastore.find(User.class).field("email").equal(email)).thenReturn(userQuery);
         when(datastore.findAndDelete(userQuery)).thenReturn(null);
+
         userDao.deleteByEmail(email);
         Mockito.verify(datastore, Mockito.timeout(0)).delete(User.class);
     }
