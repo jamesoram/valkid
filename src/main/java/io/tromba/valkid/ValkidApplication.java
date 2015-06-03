@@ -29,7 +29,7 @@ public class ValkidApplication extends Application<ValkidConfiguration> {
         environment.lifecycle().manage(mongoClientManager);
 
         // add resources
-        final UserResource userResource = new UserResource(configuration.getCreatedMessage(), userDao);
+        final UserResource userResource = new UserResource(userDao);
         environment.jersey().register(userResource);
         // add healthchecks
         environment.healthChecks().register("mongo", new MongoHealthCheck(mongoClientManager.getMongo()));

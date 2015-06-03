@@ -17,11 +17,9 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    private final String created;
     private final UserDao userDao;
 
-    public UserResource(String created, UserDao userDao) {
-        this.created = created;
+    public UserResource(UserDao userDao) {
         this.userDao = userDao;
     }
 

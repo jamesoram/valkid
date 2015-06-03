@@ -13,9 +13,6 @@ import javax.validation.constraints.Min;
 public class ValkidConfiguration extends Configuration {
 
     @NotEmpty
-    private String createdMessage;
-
-    @NotEmpty
     private String mongoHost;
 
     @Min(1)
@@ -24,16 +21,6 @@ public class ValkidConfiguration extends Configuration {
 
     @NotEmpty
     private String mongodb;
-
-    @JsonProperty
-    public String getCreatedMessage() {
-        return createdMessage;
-    }
-
-    @JsonProperty
-    public void setCreatedMessage(String createdMessage) {
-        this.createdMessage = createdMessage;
-    }
 
     @JsonProperty
     public String getMongoHost() {
