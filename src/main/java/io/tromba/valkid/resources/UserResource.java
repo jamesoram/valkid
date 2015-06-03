@@ -50,6 +50,7 @@ public class UserResource {
         try {
             return userDao.findByEmail(email);
         } catch (NoSuchUserException e) {
+            LOGGER.log(Level.WARNING, "user not found: " + email);
             throw new NotFoundException();
         }
     }
