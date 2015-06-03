@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 /**
  * Password helper class.
@@ -11,16 +12,19 @@ import java.util.Base64;
 public class PasswordManager {
 
     private String salt;
+    private static final Logger LOGGER = Logger.getLogger(PasswordManager.class.getName());
 
     public PasswordManager() {
         this.salt = generateSalt();
     }
 
     public void setSalt(String salt) {
+        LOGGER.info("setting salt");
         this.salt = salt;
     }
 
     public String getSalt() {
+        LOGGER.info("getting salt");
         if (null == salt) {
             this.salt = generateSalt();
         }
@@ -28,6 +32,7 @@ public class PasswordManager {
     }
 
     public String generateSalt() {
+        LOGGER.info("generating salt");
         final String algorithm = "SHA1PRNG";
         SecureRandom secureRandom;
         try {
@@ -42,6 +47,7 @@ public class PasswordManager {
     }
 
     public String encrypt(String password) {
+        LOGGER.info("encrypting password");
         final String algorithm = "SHA-512";
         MessageDigest messageDigest;
         try {
