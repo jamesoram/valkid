@@ -48,4 +48,14 @@ public class UserResource {
             throw new NotFoundException();
         }
     }
+
+    @DELETE
+    @Timed
+    public void deleteUser(@FormParam("email") String email) {
+        try {
+            userDao.deleteByEmail(email);
+        } catch (NoSuchUserException nse) {
+
+        }
+    }
 }
