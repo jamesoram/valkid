@@ -32,6 +32,7 @@ public class UserResource {
     }
 
     @GET
+    @Path("/all")
     @Timed
     public List<User> getUsers() {
         return userDao.findAll();
