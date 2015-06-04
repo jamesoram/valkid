@@ -57,12 +57,8 @@ public class UserResource {
 
     @DELETE
     @Timed
-    public void deleteUser(@FormParam("email") String email) {
+    public User deleteUser(@FormParam("email") String email) throws NoSuchUserException {
         LOGGER.log(Level.INFO, "delete user requested, email: " + email);
-        try {
-            userDao.deleteByEmail(email);
-        } catch (NoSuchUserException nse) {
-
-        }
+          return userDao.deleteByEmail(email);
     }
 }

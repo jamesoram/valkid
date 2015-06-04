@@ -64,7 +64,7 @@ public class UserDao {
         return user;
     }
 
-    public void deleteByEmail(String email) throws NoSuchUserException {
+    public User deleteByEmail(String email) throws NoSuchUserException {
         LOGGER.log(Level.INFO, "deleting user " + email);
         User result = dataStore
                 .findAndDelete(
@@ -76,5 +76,6 @@ public class UserDao {
             LOGGER.log(Level.WARNING, "user not found: " + email);
             throw new NoSuchUserException();
         }
+        return result;
     }
 }
