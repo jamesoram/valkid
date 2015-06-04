@@ -28,7 +28,6 @@ public class UserDao {
         user.setEmail(email);
         setPassword(user, password);
         save(user);
-        user.setPassword("****");
         return user;
     }
 
@@ -49,7 +48,6 @@ public class UserDao {
         user.setSalt(salt);
         user.setPassword(passwordManager.encrypt(password));
     }
-
 
     public List<User> findAll() {
         LOGGER.log(Level.INFO, "finding all users");
