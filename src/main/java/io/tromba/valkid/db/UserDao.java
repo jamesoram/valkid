@@ -82,5 +82,6 @@ public class UserDao {
     public User update(String firstName, String lastName, String email, String password) {
         LOGGER.info("updating user: " + email);
         User user = dataStore.findAndModify(null, null);
+        return user;
     }
 }
