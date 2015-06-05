@@ -61,4 +61,12 @@ public class UserResource {
         LOGGER.log(Level.INFO, "delete user requested, email: " + email);
           return userDao.deleteByEmail(email);
     }
+
+    @PUT
+    @Timed
+    public User updateUser(@FormParam("first_name") String firstName, @FormParam("last_name") String lastName,
+                           @FormParam("email") String email, @FormParam("password") String password) {
+        LOGGER.info("update user requested: " + email);
+        return userDao.update(firstName, lastName, email, password);
+    }
 }
