@@ -79,9 +79,14 @@ public class UserDao {
         return result;
     }
 
-    public User update(String firstName, String lastName, String email, String password) {
+    public User update(String firstName, String lastName, String email) throws NoSuchUserException {
         LOGGER.info("updating user: " + email);
-        User user = dataStore.findAndModify(dataStore.find(User.class).field("email").equal(email), null);
+        User user = dataStore.find(User.class).field("email").equal(email).get();
+        if (null == user) {
+            throw new NoSuchUserException();
+        }
+        dataStore.update(user, dataStore.createUpdateOperations(User.class)
+                .add("firstName", firstName).add("lastName", lastName).add("email", email));
         return user;
     }
 }

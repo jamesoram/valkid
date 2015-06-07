@@ -6,6 +6,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.FieldEnd;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -128,5 +129,28 @@ public class TestUserDao {
 
         userDao.deleteByEmail(email);
         Mockito.verify(datastore, Mockito.timeout(0)).delete(User.class);
+    }
+
+    @Test(groups = "userDao")
+    public void testUpdateUser() {
+        final String firstName = "testName";
+        final String lastName = "testLastName";
+        final String email = "test@test.tst";
+        FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
+        when(fieldEnd.equal(email)).thenReturn(userQuery);
+        User user = new User();
+        user.setEmail(email);
+        when(userQuery.get()).thenReturn(user);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
+        when(datastore.find(User.class).field("email").equal(email)).thenReturn(userQuery);
+        UpdateOperations updateOperations = Mockito.mock(UpdateOperations.class);
+        when(datastore.createUpdateOperations(User.class)).thenReturn(updateOperations);
+        when(updateOperations.add("firstName", firstName)).thenReturn(updateOperations);
+        when(updateOperations.add("lastName", lastName)).thenReturn(updateOperations);
+        when(updateOperations.add("email", email)).thenReturn(updateOperations);
+        when(datastore.update(user, updateOperations));
+
+        // do assert
     }
 }
