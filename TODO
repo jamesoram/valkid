@@ -1,3 +1,10 @@
 support api tokens
 reset password
 email validation
+
+helpful notes:
+
+https://stackoverflow.com/questions/18417383/completing-the-morphia-mongodb-example-code
+
+http://www.obsidianscheduler.com/blog/using-mongodb-with-morphia/
+
