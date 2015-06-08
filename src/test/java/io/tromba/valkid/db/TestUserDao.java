@@ -7,6 +7,8 @@ import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.FieldEnd;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
+import org.mongodb.morphia.query.UpdateResults;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -129,7 +131,7 @@ public class TestUserDao {
         Mockito.verify(datastore, Mockito.timeout(0)).delete(User.class);
     }
 
-    @Test(groups = "userDao", enabled = false)
+    @Test(groups = "userDao")
     public void testUpdateUser() {
         FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
         when(fieldEnd.equal(email)).thenReturn(userQuery);
@@ -144,8 +146,14 @@ public class TestUserDao {
         when(updateOperations.add("firstName", firstName)).thenReturn(updateOperations);
         when(updateOperations.add("lastName", lastName)).thenReturn(updateOperations);
         when(updateOperations.add("email", email)).thenReturn(updateOperations);
-        when(datastore.update(user, updateOperations));
+        UpdateResults updateResults = Mockito.mock(UpdateResults.class);
+        when(datastore.update(user, updateOperations)).thenReturn(updateResults);
 
-        // do assert
+        try {
+            userDao.update(firstName, lastName, email);
+        } catch (NoSuchUserException nse) {
+            Assert.fail("user not found");
+        }
+        Mockito.verify(datastore, Mockito.times(1)).update(user, updateOperations);
     }
 }
