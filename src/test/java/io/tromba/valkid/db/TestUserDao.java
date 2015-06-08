@@ -27,6 +27,9 @@ public class TestUserDao {
     private Query<User> userQuery;
     private UserDao userDao;
     private static final String email = "someone@somewhere.com";
+    private final String firstName = "james";
+    private final String lastName = "test";
+    private final String password = "secret";
 
     @BeforeClass
     private void setUp() {
@@ -37,11 +40,6 @@ public class TestUserDao {
 
     @Test(groups = "userDao")
     public void testUserCreated() {
-        final String created = "created";
-        final String firstName = "james";
-        final String lastName = "test";
-        final String email = "test@example.com";
-        final String password = "secret";
         when(datastore.save()).thenReturn(new LinkedList<Key<Object>>());
         User user = userDao.create(firstName, lastName,email, password);
         // check that the data has been saved to the database.
@@ -131,11 +129,8 @@ public class TestUserDao {
         Mockito.verify(datastore, Mockito.timeout(0)).delete(User.class);
     }
 
-    @Test(groups = "userDao")
+    @Test(groups = "userDao", enabled = false)
     public void testUpdateUser() {
-        final String firstName = "testName";
-        final String lastName = "testLastName";
-        final String email = "test@test.tst";
         FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
         when(fieldEnd.equal(email)).thenReturn(userQuery);
         User user = new User();
