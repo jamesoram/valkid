@@ -67,6 +67,11 @@ public class UserResource {
     public User updateUser(@FormParam("first_name") String firstName, @FormParam("last_name") String lastName,
                            @FormParam("email") String email, @FormParam("password") String password) {
         LOGGER.info("update user requested: " + email);
-        return userDao.update(firstName, lastName, email, password);
+        try {
+            return userDao.update(firstName, lastName, email);
+        } catch (NoSuchUserException nse) {
+            LOGGER.log(Level.WARNING, "user not found: " + email);
+            throw new NotFoundException();
+        }
     }
 }
