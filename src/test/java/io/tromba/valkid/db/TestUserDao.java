@@ -156,4 +156,26 @@ public class TestUserDao {
         }
         Mockito.verify(datastore, Mockito.times(1)).update(user, updateOperations);
     }
+
+    @Test(groups = "userDao", expectedExceptions = NoSuchUserException.class)
+    public void testUpdateNonExistingUser() throws NoSuchUserException {
+        FieldEnd fieldEnd = Mockito.mock(FieldEnd.class);
+        when(fieldEnd.equal(email)).thenReturn(userQuery);
+        User user = new User();
+        user.setEmail(email);
+        when(userQuery.get()).thenReturn(user);
+        when(datastore.find(User.class)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email")).thenReturn(fieldEnd);
+        when(datastore.find(User.class).field("email").equal(email)).thenReturn(userQuery);
+        when(datastore.find(User.class).field("email").equal(email).get()).thenReturn(null);
+        UpdateOperations updateOperations = Mockito.mock(UpdateOperations.class);
+        when(datastore.createUpdateOperations(User.class)).thenReturn(updateOperations);
+        when(updateOperations.add("firstName", firstName)).thenReturn(updateOperations);
+        when(updateOperations.add("lastName", lastName)).thenReturn(updateOperations);
+        when(updateOperations.add("email", email)).thenReturn(updateOperations);
+        UpdateResults updateResults = Mockito.mock(UpdateResults.class);
+        when(datastore.update(user, updateOperations)).thenReturn(updateResults);
+
+        userDao.update(firstName, lastName, email);
+    }
 }
